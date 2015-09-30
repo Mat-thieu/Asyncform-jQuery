@@ -3,12 +3,11 @@ A jQuery plugin for asynchronous forms, handles uploads and will soon handle cli
 
 I will post the documentation here at a later point, [for now you can read the docs here](http://asyncform.consolelog.nl)
 ## Example code
-```
+```javascript
 $('#formy').asyncform({
     finalize: 'summarize',// Summarize, log, redirect(URL=http://example.com), serverResponse
     output: '#output',
     onSubmit: function(form){
-        // Disabled all inputs after submission, because why the hell not
         $(form['inputs']).prop('disabled', true);
     },
     onUpload: {
