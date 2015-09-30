@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery Asyncform example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="card-panel">
+                <h1>jQuery Asyncform example</h1>
+                <div class="row">
+                    <div class="col s4">
+                        <form action="example-server.php" method="POST" id="example-form">
+                            <input type="text" placeholder="First name" name="firstname" data-validate="text">
+                            <input type="text" placeholder="Last name" name="lastname" data-validate="text">
+                            <input type="text" placeholder="Email" name="email" data-validate="email">
+                            <input type="text" placeholder="Your website" name="url" data-validate="url">
+                            <input type="text" placeholder="Your favorite number" name="number" data-validate="number">
+                            <input type="password" placeholder="Password" name="password">
+                            <input type="file" name="fileexample">
+                            <input type="file" name="fileexample2">
+                            <input type="text" placeholder="Favorite Food" name="food" data-validate="text">
+                            <textarea name="testzor" class="materialize-textarea" placeholder="Tell something about yourself"></textarea>
+                            <br>
+                            <input type="submit" class="btn btn-success submit">
+                        </form>
+                    </div>
+                    <div class="col s8">
+                        <div class="card-panel" id="output">
+                            <h2>Output</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="jquery.asyncform.js"></script>
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+$('#formy').asyncform({
+    finalize: 'summarize',// Summarize, log, redirect(URL=http://example.com), serverResponse
+    output: '#output',
+    onSubmit: function(form){
+        // Disabled all inputs after submission, because why the hell not
+        $(form['inputs']).prop('disabled', true);
+    },
+    onUpload: {
+        start : function(){
+            $('.progress').slideDown(500);
+        },
+        progress : function(progress){
+            var strippedPercentage = parseInt(progress['percentage']);
+            $('#formProg').html(strippedPercentage+'%').attr('aria-valuenow', strippedPercentage).css('width', strippedPercentage+'%');
+        }
+    },
+    onSuccess: function(response){
+        $('#formProg').html('Done!');
+        $(response['inputs']).prop('disabled', false);
+        $('.progress').delay(500).slideUp(500);
+    },
+    onFail: function(err){
+        alert('An error has occured, please try again.');
+        console.log(err);
+    }
+});
+</script>
+</body>
+</html>
